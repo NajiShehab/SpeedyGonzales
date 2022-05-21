@@ -12,7 +12,7 @@ public class SpeedyGonzales : Mod
     public static SpeedyGonzales instance;
 
     public float speed = 2f;
-    public Network_Player player = RAPI.GetLocalPlayer();
+    public static Network_Player player = RAPI.GetLocalPlayer();
 
     // Console stuff
     public static string modColor = "#4CB0FE";
@@ -28,9 +28,7 @@ public class SpeedyGonzales : Mod
         if (instance != null) { throw new Exception("SpeedyGonzales singleton was already set"); }
         instance = this;
 
-        RConsole.Log(modPrefix + "loaded!");
-
-        RConsole.Log(player);
+        RConsole.Log(modPrefix + "  loaded!");
     }
 
     public void OnModUnload()
@@ -40,11 +38,18 @@ public class SpeedyGonzales : Mod
     }
 
 
-    [ConsoleCommand(name: "move_speed", docs: "This make you go zoom.")]
-    public static string MyCommand(string[] args)
+    [ConsoleCommand(name: "sprintSpeed", docs: "This make you go zoom.")]
+    public static string SprintSpeed(string[] args)
     {
-        instance.speed = float.Parse(args[0]);
-        return "My Variable : " + instance.speed;
+        player.PersonController.sprintSpeed = float.Parse(args[0]);
+        return "Sprint speed set to : " + player.PersonController.sprintSpeed;
+    }
+
+    [ConsoleCommand(name: "moveSpeed", docs: "This make you go zoom.")]
+    public static string MoveSpeed(string[] args)
+    {
+        player.PersonController.normalSpeed = float.Parse(args[0]);
+        return "Move speed set to : " + player.PersonController.normalSpeed;
     }
 }
 
