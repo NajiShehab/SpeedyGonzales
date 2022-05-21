@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class SpeedyGonzales : Mod
 {
@@ -20,9 +15,6 @@ public class SpeedyGonzales : Mod
     public static string modColor = "#4CB0FE";
     public static string modPrefix = "[" + Utils.Colorize("SpeedyGonzales", modColor) + "] ";
 
-    // Misc
-    private Semih_Network network = ComponentManager<Semih_Network>.Value;
-    private Settings gameSettings = ComponentManager<Settings>.Value;
     #endregion
 
     public void Start()
@@ -30,7 +22,7 @@ public class SpeedyGonzales : Mod
         if (instance != null) { throw new Exception("SpeedyGonzales singleton was already set"); }
         instance = this;
 
-        RConsole.Log(modPrefix + " loaded!");
+        RConsole.Log(modPrefix + "Loaded!");
     }
 
     public void OnModUnload()
@@ -41,7 +33,7 @@ public class SpeedyGonzales : Mod
             player.PersonController.sprintSpeed = defautlSprintSpeed;
         }
 
-        RConsole.Log(modPrefix + "unloaded!");
+        RConsole.Log(modPrefix + "Unloaded!");
         Destroy(instance);
     }
 
