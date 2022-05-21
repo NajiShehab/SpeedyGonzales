@@ -30,20 +30,16 @@ public class SpeedyGonzales : Mod
         if (instance != null) { throw new Exception("SpeedyGonzales singleton was already set"); }
         instance = this;
 
-        if (player == null) { throw new Exception("SpeedyGonzales - No player exists"); }
-
-        // Cache default move and sprint speeds
-        defaultMoveSpeed = player.PersonController.normalSpeed;
-        defautlSprintSpeed = player.PersonController.sprintSpeed;
-
-        RConsole.Log(modPrefix + "  loaded!");
+        RConsole.Log(modPrefix + " loaded!");
     }
 
     public void OnModUnload()
     {
         // Reset default move and sprint speeds
-        player.PersonController.normalSpeed = defaultMoveSpeed;
-        player.PersonController.sprintSpeed = defautlSprintSpeed;
+        if (player != null) {
+            player.PersonController.normalSpeed = defaultMoveSpeed;
+            player.PersonController.sprintSpeed = defautlSprintSpeed;
+        }
 
         RConsole.Log(modPrefix + "unloaded!");
         Destroy(instance);
@@ -57,6 +53,10 @@ public class SpeedyGonzales : Mod
             float speed = float.Parse(args[0]);
             
             if (speed > 0 && speed < 1000) {
+                if (defautlSprintSpeed == 0.0f) {
+                    defautlSprintSpeed = player.PersonController.sprintSpeed;
+                }
+
                 player.PersonController.sprintSpeed = speed;
                 return "Sprint speed set to: " + player.PersonController.sprintSpeed;
             }
@@ -64,7 +64,7 @@ public class SpeedyGonzales : Mod
             return "Enter valid speed (0 < speed < 1000); example: sprintSpeed 50";
         }
 
-        return "Enter speed; example: sprintSpeed 50. Current sprint speed:" + player.PersonController.sprintSpeed.ToString();
+        return "Enter speed; example: sprintSpeed 50. Current sprint speed: " + player.PersonController.sprintSpeed.ToString();
     }
 
     [ConsoleCommand(name: "moveSpeed", docs: "Alter the sprint speed of character. Default: 3.")]
@@ -74,13 +74,16 @@ public class SpeedyGonzales : Mod
             float speed = float.Parse(args[0]);
             
             if (speed > 0 && speed < 1000) {
+                if (defaultMoveSpeed == 0.0f) {
+                    defaultMoveSpeed = player.PersonController.normalSpeed;
+                }
                 player.PersonController.normalSpeed = speed;
                 return "Move speed set to: " + player.PersonController.normalSpeed;
             }
 
             return "Enter valid speed (0 < speed < 1000); example: moveSpeed 50";
         }
-        return "Enter speed; example: movespeed 50. Current move speed:" + player.PersonController.moveSpeed.ToString();
+        return "Enter speed; example: movespeed 50. Current move speed: " + player.PersonController.normalSpeed.ToString();
     }
 }
 
