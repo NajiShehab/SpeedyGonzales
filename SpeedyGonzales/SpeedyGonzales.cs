@@ -13,9 +13,6 @@ public class SpeedyGonzales : Mod
 
     public static Network_Player player = RAPI.GetLocalPlayer();
 
-    public static float defaultMoveSpeed;
-    public static float defautlSprintSpeed;
-
     // Console stuff
     public static string modColor = "#4CB0FE";
     public static string modPrefix = "[" + Utils.Colorize("SpeedyGonzales", modColor) + "] ";
@@ -35,12 +32,6 @@ public class SpeedyGonzales : Mod
 
     public void OnModUnload()
     {
-        // Reset default move and sprint speeds
-        if (player != null) {
-            player.PersonController.normalSpeed = defaultMoveSpeed;
-            player.PersonController.sprintSpeed = defautlSprintSpeed;
-        }
-
         RConsole.Log(modPrefix + "unloaded!");
         Destroy(instance);
     }
@@ -53,9 +44,6 @@ public class SpeedyGonzales : Mod
             float speed = float.Parse(args[0]);
             
             if (speed > 0 && speed < 1000) {
-                if (defautlSprintSpeed == 0.0f) {
-                    defautlSprintSpeed = player.PersonController.sprintSpeed;
-                }
                 player.PersonController.sprintSpeed = speed;
                 return "Sprint speed set to: " + player.PersonController.sprintSpeed;
             }
@@ -73,9 +61,6 @@ public class SpeedyGonzales : Mod
             float speed = float.Parse(args[0]);
             
             if (speed > 0 && speed < 1000) {
-                if (defaultMoveSpeed == 0.0f) {
-                    defaultMoveSpeed = player.PersonController.normalSpeed;
-                }
                 player.PersonController.normalSpeed = speed;
                 return "Move speed set to: " + player.PersonController.normalSpeed;
             }
