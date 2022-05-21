@@ -1,4 +1,4 @@
 # ignore generated mod
 *.rmod
-
+*.vs
 .fake
