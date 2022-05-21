@@ -11,8 +11,10 @@ public class SpeedyGonzales : Mod
     #region Variables
     public static SpeedyGonzales instance;
 
-    public float speed = 2f;
     public static Network_Player player = RAPI.GetLocalPlayer();
+
+    public static float defaultMoveSpeed;
+    public static float defautlSprintSpeed;
 
     // Console stuff
     public static string modColor = "#4CB0FE";
@@ -28,56 +30,63 @@ public class SpeedyGonzales : Mod
         if (instance != null) { throw new Exception("SpeedyGonzales singleton was already set"); }
         instance = this;
 
+        if (player == null) { throw new Exception("SpeedyGonzales - No player exists"); }
+
+        // Cache default move and sprint speeds
+        defaultMoveSpeed = player.PersonController.normalSpeed;
+        defautlSprintSpeed = player.PersonController.sprintSpeed;
+
         RConsole.Log(modPrefix + "  loaded!");
     }
 
     public void OnModUnload()
     {
+        // Reset default move and sprint speeds
+        player.PersonController.normalSpeed = defaultMoveSpeed;
+        player.PersonController.sprintSpeed = defautlSprintSpeed;
+
         RConsole.Log(modPrefix + "unloaded!");
-        Destroy(gameObject);
+        Destroy(instance);
     }
 
 
-    [ConsoleCommand(name: "sprintSpeed", docs: "This make you go zoom.")]
+    [ConsoleCommand(name: "sprintSpeed", docs: "Alter the sprint speed of character. Default: 5.")]
     public static string SprintSpeed(string[] args)
     {
-        player.PersonController.sprintSpeed = float.Parse(args[0]);
-        return "Sprint speed set to : " + player.PersonController.sprintSpeed;
+        if (args.Length == 1) {
+            float speed = float.Parse(args[0]);
+            
+            if (speed > 0 && speed < 1000) {
+                player.PersonController.sprintSpeed = speed;
+                return "Sprint speed set to: " + player.PersonController.sprintSpeed;
+            }
+
+            return "Enter valid speed (0 < speed < 1000); example: sprintSpeed 50";
+        }
+
+        return "Enter speed; example: sprintSpeed 50. Current sprint speed:" + player.PersonController.sprintSpeed.ToString();
     }
 
-    [ConsoleCommand(name: "moveSpeed", docs: "This make you go zoom.")]
+    [ConsoleCommand(name: "moveSpeed", docs: "Alter the sprint speed of character. Default: 3.")]
     public static string MoveSpeed(string[] args)
     {
-        player.PersonController.normalSpeed = float.Parse(args[0]);
-        return "Move speed set to : " + player.PersonController.normalSpeed;
+        if (args.Length == 1) {
+            float speed = float.Parse(args[0]);
+            
+            if (speed > 0 && speed < 1000) {
+                player.PersonController.normalSpeed = speed;
+                return "Move speed set to: " + player.PersonController.normalSpeed;
+            }
+
+            return "Enter valid speed (0 < speed < 1000); example: moveSpeed 50";
+        }
+        return "Enter speed; example: movespeed 50. Current move speed:" + player.PersonController.moveSpeed.ToString();
     }
 }
 
 #region Child Classes
 public class Utils
 {
-    private static List<string> positiveBools = new List<string>() { "true", "1", "yes", "y" };
-    private static List<string> negativeBools = new List<string>() { "false", "0", "no", "n" };
-
-    #region TypeChecks
-    public static bool IsBool(string text)
-    {
-        text = text.ToLowerInvariant().Replace(" ", "");
-        if (!positiveBools.Contains(text) && !negativeBools.Contains(text))
-            return false;
-        return true;
-    }
-    public static bool Bool(string text, bool original)
-    {
-        text = text.ToLowerInvariant().Replace(" ", "");
-        if (positiveBools.Contains(text))
-            return true;
-        if (negativeBools.Contains(text))
-            return false;
-        return original;
-    }
-    #endregion
-
     #region Colorize
     public static string Colorize(string text, string col)
     {
