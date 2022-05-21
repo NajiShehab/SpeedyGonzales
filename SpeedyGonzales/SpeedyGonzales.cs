@@ -56,7 +56,6 @@ public class SpeedyGonzales : Mod
                 if (defautlSprintSpeed == 0.0f) {
                     defautlSprintSpeed = player.PersonController.sprintSpeed;
                 }
-
                 player.PersonController.sprintSpeed = speed;
                 return "Sprint speed set to: " + player.PersonController.sprintSpeed;
             }
