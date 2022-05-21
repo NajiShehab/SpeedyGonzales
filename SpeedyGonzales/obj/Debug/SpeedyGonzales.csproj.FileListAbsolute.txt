@@ -1,0 +1,2 @@
+C:\Users\archi\Desktop\SpeedyGonzales\SpeedyGonzales\obj\Debug\SpeedyGonzales.csprojAssemblyReference.cache
+C:\Users\archi\Desktop\SpeedyGonzales\SpeedyGonzales\obj\Debug\SpeedyGonzales.csproj.CoreCompileInputs.cache
