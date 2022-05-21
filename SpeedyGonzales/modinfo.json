@@ -9,6 +9,6 @@
   "gameVersion": "1.0",
   "requiredByAllPlayers": false,
   "updateUrl": "https://www.raftmodding.com/api/v1/mods/speedygonzales/version.txt",
-  "isModPermanent": true,
+  "isModPermanent": false,
   "excludedFiles": []
 }
